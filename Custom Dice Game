@@ -1,0 +1,148 @@
+# imports needed:
+# tkinter for GUI
+# random for game
+# message box for text entry
+import tkinter
+import tkinter.messagebox
+import random
+
+class Lab:
+    def __init__(self):
+        # main window 
+        self.main = tkinter.Tk()
+        
+        # FRAMES for GUI
+        self.num_dice_frame = tkinter.Frame(self.main)
+        self.dice_sides_frame = tkinter.Frame(self.main)
+        self.roll_value_frame = tkinter.Frame(self.main)
+        self.computer_value_frame = tkinter.Frame(self.main)
+        self.button1_frame = tkinter.Frame(self.main)
+        self.button2_frame = tkinter.Frame(self.main)
+        
+        # Computer Asks User Inputs for NUM_DICE_FRAME
+        self.num_dice_label = tkinter.Label(self.num_dice_frame, text="Enter number of dice:")
+        self.num_dice_entry = tkinter.Entry(self.num_dice_frame, width=10)
+        self.num_dice_label.pack(side='left')
+        self.num_dice_entry.pack(side='left')
+        
+        # Computer Asks User Inputs for DICE_SIDES_FRAME
+        self.dice_sides_label = tkinter.Label(self.dice_sides_frame, text="Enter number of sides:")
+        self.dice_sides_entry = tkinter.Entry(self.dice_sides_frame, width=10)
+        self.dice_sides_label.pack(side='left')
+        self.dice_sides_entry.pack(side='left')
+        
+        # Display ROLL_VALUE_FRAME (only when BUTTON1_FRAME is clicked/"Roll" button)
+        self.result_label = tkinter.Label(self.roll_value_frame, text="")
+        self.roll_value = tkinter.StringVar()
+        self.roll_value_label = tkinter.Label(self.roll_value_frame, textvariable=self.roll_value)
+        self.result_label.pack(side='left')
+        self.roll_value_label.pack(side='left')
+        
+        # Display ROLL of COMPUTER_VALUE_FRAME (only when BUTTON2_FRAME is clicked/"VS" button)
+        self.computer_label = tkinter.Label(self.computer_value_frame, text='')
+        self.computer_roll = tkinter.StringVar()
+        self.computer_roll_label = tkinter.Label(self.computer_value_frame, textvariable=self.computer_roll)
+        self.computer_label.pack(side='left')
+        self.computer_roll_label.pack(side='left')
+        
+        # BUTTON1_FRAME (Roll/Quit)
+        self.roll_button = tkinter.Button(self.button1_frame, text="Roll", command=self.roll)
+        self.quit_button = tkinter.Button(self.button1_frame, text="Quit", command=self.main.destroy)
+        self.roll_button.pack(side='left')
+        self.quit_button.pack(side='left')
+        
+        # BUTTON2_FRAME (Against Computer)
+        self.play_button = tkinter.Button(self.button2_frame, text="VS", command=self.computer)
+        self.play_button.pack()
+        
+        # Display on GUI by ORDER
+        self.num_dice_frame.pack()
+        self.dice_sides_frame.pack()
+        self.roll_value_frame.pack()
+        self.computer_value_frame.pack()
+        self.button1_frame.pack()
+        self.button2_frame.pack()
+        # LOOP
+        tkinter.mainloop()
+
+    def roll(self):
+        # in case user places a non-integer when calling 'Roll'
+        try:
+            # gets the two inputs from the user
+            self.num_dice = int(self.num_dice_entry.get())
+            self.dice_sides = int(self.dice_sides_entry.get())
+
+            # do not except negative numbers or 0 as input
+            if self.dice_sides <= 0 or self.num_dice <= 0:
+                self.roll_value.set("Invalid Integer!")
+                self.computer_roll.set("Integers Only!")
+                tkinter.messagebox.showinfo('Error', 'Set proper values in EVERY box!')
+            else:
+                # finds the max possible roll number
+                max_num = self.num_dice * self.dice_sides
+                
+                # gets a random number between the #-of dice and max possible #
+                # gets player/user random number
+                p_random_num = random.randint(self.num_dice, max_num)
+                
+                # display (set) in GUI user roll value
+                self.roll_value.set("User roll value: " + str(p_random_num))
+                
+                # display (set) nothing (keep computer roll value empty)
+                self.computer_roll.set("")
+        except:
+            # warns user to set integers only
+            # and sets the computer/user value to
+            # tell the user + a pop up message box
+            self.roll_value.set("Invalid Integer!")
+            self.computer_roll.set("Integers Only!")
+            tkinter.messagebox.showinfo('Error', 'Set proper values in EVERY box!')
+
+    def computer(self):
+        # in case user places a non-integer when calling 'VS'
+        try:
+            # gets the two inputs from the user
+            self.num_dice = int(self.num_dice_entry.get())
+            self.dice_sides = int(self.dice_sides_entry.get())
+
+            # do not except negative numbers or 0 as input
+            if self.dice_sides <= 0 or self.num_dice <= 0:
+                self.roll_value.set("Invalid Integer!")
+                self.computer_roll.set("Integers Only!")
+                tkinter.messagebox.showinfo('Error', 'Set proper values in EVERY box!')
+            else:
+                # finds the max possible roll number
+                max_num = self.num_dice * self.dice_sides
+                
+                # gets a random number between the #-of dice and max possible #
+                # computer random number
+                com_random_num = random.randint(self.num_dice, max_num)
+                
+                # player/user random number
+                p_random_num = random.randint(self.num_dice, max_num)
+                
+                # display (set) in GUI user roll value
+                self.roll_value.set("User roll value: " + str(p_random_num))
+                
+                # display (set) in GUI computer roll value
+                self.computer_roll.set("Computer roll value: " + str(com_random_num))
+                
+                # display who won using a message box + the values received 
+                if com_random_num > p_random_num:
+                    tkinter.messagebox.showinfo('User VS Computer', 'User value: ' + str(p_random_num) +
+                                                                    '\nComputer value: ' + str(com_random_num) + '\nComputer Wins!')
+                elif com_random_num < p_random_num:
+                    tkinter.messagebox.showinfo('User VS Computer', 'User value: ' + str(p_random_num) +
+                                                                    '\nComputer value: ' + str(com_random_num) + '\nUser Wins!')
+                else:
+                    tkinter.messagebox.showinfo('User VS Computer', 'User value: ' + str(p_random_num) +
+                                                                    '\nComputer value: ' + str(com_random_num) + '\nTie!')
+        except:
+            # warn user to set integers only
+            # and sets the computer/user value to
+            # tell the user + a pop up message box
+            self.roll_value.set("Invalid Integer!")
+            self.computer_roll.set("Integers Only!")
+            tkinter.messagebox.showinfo('Error', 'Set proper values in EVERY box!')
+            
+test_Lab = Lab()
