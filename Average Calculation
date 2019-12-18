@@ -1,0 +1,66 @@
+# import tkinter for GUI
+import tkinter
+
+class TestAvg:
+    def __init__(self):
+        # creation of GUI 
+        self.main = tkinter.Tk()
+
+        # Frames by Order
+        self.test1_frame = tkinter.Frame(self.main)
+        self.test2_frame = tkinter.Frame(self.main)
+        self.avg_frame = tkinter.Frame(self.main)
+        self.button_frame = tkinter.Frame(self.main)
+
+        # Test1_FRAME, get first amount from user
+        self.test1_label = tkinter.Label(self.test1_frame, text="Enter the score for test 1:")
+        self.test1_entry = tkinter.Entry(self.test1_frame, width=10)
+        self.test1_label.pack(side='left')
+        self.test1_entry.pack(side='left')
+
+        # Test2_FRAME, get second amount from user
+        self.test2_label = tkinter.Label(self.test2_frame, text="Enter the score for test 2:")
+        self.test2_entry = tkinter.Entry(self.test2_frame, width=10)
+        self.test2_label.pack(side='left')
+        self.test2_entry.pack(side='left')
+
+        # AVERAGE_FRAME, display the average amount
+        self.result_label = tkinter.Label(self.avg_frame, text='Average')
+        
+        # create amount as a string 
+        self.avg = tkinter.StringVar()
+        
+        # have amount displayed 
+        self.avg_label = tkinter.Label(self.avg_frame, textvariable=self.avg)
+        self.result_label.pack(side='left')
+        self.avg_label.pack(side='left')
+
+        # BUTTOM_FRAME, appears Average and Quit buttons
+        self.calc_button = tkinter.Button(self.button_frame, text='Average', command=self.calc_avg)
+        self.quit_button = tkinter.Button(self.button_frame, text='Quit', command=self.main.destroy)
+        self.calc_button.pack(side='left')
+        self.quit_button.pack(side='left')
+
+        # Display FRAMES in order
+        self.test1_frame.pack()
+        self.test2_frame.pack()
+        self.avg_frame.pack()
+        self.button_frame.pack()
+
+        # loop GUI non-stop
+        tkinter.mainloop()
+        
+    # in result of AVERAGE button clicked
+    def calc_avg(self):
+        # gather user input
+        self.test1 = float(self.test1_entry.get())
+        self.test2 = float(self.test2_entry.get())
+
+        # find the average
+        self.average = (self.test1 + self.test2) / 2.0
+
+        # set the average into a string for the display
+        self.avg.set(self.average)
+
+# calls the whole program
+test_avg = TestAvg()
