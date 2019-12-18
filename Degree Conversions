@@ -1,0 +1,86 @@
+# import for GUI and to
+# create a message box
+import tkinter
+import tkinter.messagebox
+
+class Lab:
+    def __init__(self):
+        # main window
+        self.main = tkinter.Tk()
+
+        # set a title
+        self.main.title("Convert a Temperature!")
+
+        # FRAMES
+        self.choose_frame = tkinter.Frame(self.main)
+        self.show_frame = tkinter.Frame(self.main)
+        self.display_frame = tkinter.Frame(self.main)
+        self.leave_frame = tkinter.Frame(self.main)
+
+        # creates IntVar object to use with RadioButtons
+        self.choose = tkinter.IntVar()
+
+        # set IntVar object 1
+        self.choose.set(1)
+
+        # Displays CHOOSE_FRAME (uses Radiobutton (choose one of them only) for one choice to happen)
+        self.c_label = tkinter.Radiobutton(self.choose_frame, text='C -> F', variable=self.choose, value=1)
+        self.c_label.pack(side='left')
+        self.f_label = tkinter.Radiobutton(self.choose_frame, text='F -> C', variable=self.choose, value=2)
+        self.f_label.pack(side='left')
+        
+        # Displays SHOW_FRAME to Ask User For a Degree
+        self.show_label = tkinter.Label(self.show_frame, text="Enter temperature:")
+        # entry box for user input
+        self.show_entry = tkinter.Entry(self.show_frame, width=10)
+        self.show_label.pack(side='left')
+        self.show_entry.pack(side='left')
+
+        # (only when Fahrenheit or Celsius is called by Radiobutton)
+        # Displays DISPLAY_FRAME result/conversion
+        self.result = tkinter.Label(self.display_frame, text='')
+        self.display = tkinter.StringVar()
+        self.display_label = tkinter.Label(self.display_frame, textvariable=self.display)
+        self.result.pack(side='left')
+        self.display_label.pack(side='left')
+
+        # Displays LEAVE_FRAME
+        # (shows Quit option to leave peacefully)
+        self.convert = tkinter.Button(self.leave_frame, text='Convert', command=self.convert)
+        self.quit_button = tkinter.Button(self.leave_frame, text='Quit', command=self.main.destroy)
+        self.convert.pack(side='left')
+        self.quit_button.pack(side='left')
+
+        # Displays Frames in GUI by Order
+        self.choose_frame.pack()
+        self.show_frame.pack()
+        self.display_frame.pack()
+        self.leave_frame.pack()
+
+        # loop
+        tkinter.mainloop()
+
+    # when Convert button is Called
+    def convert(self):
+        # only excepts numbers
+        try:
+            # gets value to convert
+            c = float(self.show_entry.get())
+            f = float(self.show_entry.get())
+            # if radio button 1 is called
+            # (F -> C)
+            if self.choose.get() == 1:
+                conversion = (c * 1.8) + 32
+                self.display.set("Conversion: " + str(conversion))
+            # if radio button 2 is called
+            # (C -> F)
+            if self.choose.get() == 2:
+                conversion = (f - 32) * (5/9)
+                self.display.set("Conversion: " + str(conversion))
+        except:
+            # warn the user there is incorrect input
+            self.display.set('Integers Only!')
+            tkinter.messagebox.showinfo("You Can't Do That!", 'Set a valid value!')
+
+# calls whole class to start
+test_lab = Lab()
